@@ -1,0 +1,41 @@
+version: '3'
+
+volumes:
+  dbdata:
+
+services:
+
+  app:
+    build:
+      context: ./docker/
+      dockerfile: app.dockerfile
+    working_dir: /var/www
+    volumes: &common-vol
+      - ./:/var/www
+    environment:
+      - "DB_CONNECTION=pgsql"
+      - "DB_PORT=5432"
+      - "DB_HOST=db"
+    links:
+      - db:db
+
+  web:
+    build:
+      context: ./docker/
+      dockerfile: web.dockerfile
+    working_dir: /var/www
+    volumes: *common-vol
+    ports:
+      - 8080:80
+    links:
+      - app:app
+
+  db:
+    image: postgres:9.6
+    volumes:
+      - dbdata:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+        - "15432:5432"
