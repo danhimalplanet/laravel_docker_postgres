@@ -1,4 +1,4 @@
-build-docker:
+build-docker: # gets postgres database and password from .env
 	sh scripts/build-docker.sh
 
 key:
