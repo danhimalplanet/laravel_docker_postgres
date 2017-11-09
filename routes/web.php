@@ -20,3 +20,7 @@ Route::any('adminer', '\Miroc\LaravelAdminer\AdminerController@index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::any('/hello2', function () {
+	return "hello there";
+});
